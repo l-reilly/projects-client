@@ -2,17 +2,26 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
+const margin = { margin: "0 10px" };
+
 function Navbar() {
   const { user, handleLogout } = useAuth();
 
   if (user) {
     return (
       <div>
-        <Link to="/">Home</Link>
-        <Link style={{ margin: "0 15px" }} to="/private">
-          Private
+        <Link style={margin} to="/">
+          Home
         </Link>
-        <button onClick={handleLogout}>logout</button>
+        <Link style={margin} to="/projects">
+          Projects
+        </Link>
+        <Link style={margin} to="/new-project">
+          New project
+        </Link>
+        <button style={margin} onClick={handleLogout}>
+          logout
+        </button>
       </div>
     );
   }
