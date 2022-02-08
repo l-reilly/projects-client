@@ -1,18 +1,31 @@
 import React from "react";
-import { createProject } from "../../api";
+import { createProject, uploadImage } from "../../api";
 
 function NewProject() {
   const [state, setState] = React.useState({ title: "", description: "" });
+  const [file, setFile] = React.useState();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { data } = await createProject(state);
+    const formData = new FormData();
+    formData.append("imageUrl", file, file.name);
+    const { data: imageData } = await uploadImage(formData);
+    console.log("imageData", imageData);
+    const { data } = await createProject({
+      ...state,
+      imageUrl: imageData.imageUrl,
+    });
     console.log("data", data);
   };
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
+  };
+
+  const handleFileChange = ({ target }) => {
+    const [file] = target.files;
+    setFile(file);
   };
 
   return (
@@ -31,6 +44,7 @@ function NewProject() {
         onChange={handleChange}
         value={state.description}
       />
+      <input type="file" name="imageUrl" onChange={handleFileChange} />
       <button type="submit">Create Project</button>
     </form>
   );

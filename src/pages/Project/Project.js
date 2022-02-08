@@ -16,6 +16,7 @@ function Project() {
       <h2>Project</h2>
       <p>{data?.title}</p>
       <p>{data?.description}</p>
+      {data?.imageUrl && <img src={data?.imageUrl} />}
     </Suspense>
   );
 }
